@@ -1,0 +1,21 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0 0;
+  }
+  
+body{
+    display: flex;
+    background-color: aqua;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#wrapper{
+    width: 80%;
+    min-height: 100px;
+    display:block;
+    border:2px solid blueviolet;
+
+}
