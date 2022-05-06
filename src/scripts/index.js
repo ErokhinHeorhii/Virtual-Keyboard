@@ -51,6 +51,9 @@ document.onkeydown = function (e) {
     allButtons.forEach((item) => item.classList.remove("active"));
 
     arrWithKeyCode.forEach((item) => {
+        if (item === e.key) {
+            button.classList.add("active")
+        };
         if (e.key === "CapsLock") {
             button.classList.toggle("key__active");
             changeCapsLock();
@@ -67,9 +70,8 @@ document.onkeydown = function (e) {
         else if (e.key === "ArrowDown"){
             document.querySelector("body > div > div:nth-child(62)").classList.add("active");
         }
-        else if (item === e.key) {
-            button.classList.add("active");
-        } else if (item === e.code) {
+
+        else if (item === e.code) {
             otherButton.classList.add("active");
         }
 
