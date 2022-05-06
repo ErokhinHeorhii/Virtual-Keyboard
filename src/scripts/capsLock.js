@@ -11,29 +11,31 @@ function addClassCapsLock() {
     })
 }
 
-let isOnCapsLuck = false;
-const allButtons = document.querySelectorAll(".key");
 
 function addCapsLock(e) {
     if ((e.target.getAttribute("data-name")) === "CapsLock") {
-      e.target.classList.toggle("key__active");
-      isOnCapsLuck = true;
+        e.target.classList.toggle("key__active");
     }
-    changeCapsLock();
-  }
-  
-  function changeCapsLock() {
+}
+
+const changeCapsLock = function () {
+
+    const allButtons = document.querySelectorAll(".key");
     allButtons.forEach((item) => {
-      if ((/^[a-z]{1}/).test(item.getAttribute("data-name")) && isOnCapsLuck) {
-        item.innerHTML = (item.getAttribute("data-name")).toUpperCase();
-        isOnCapsLuck = false;
-      } else if ((/^[a-z]{1}/).test(item.getAttribute("data-name")) && !isOnCapsLuck) {
-        item.innerHTML = (item.getAttribute("data-name")).toLowerCase();
-      }
+console.log(item)
+        if ((/^[a-z]/).test(item.getAttribute("data-name")) ) {
+            item.innerHTML = (item.getAttribute("data-name")).toUpperCase();
+            item.setAttribute("data-name",item.getAttribute("data-name").toUpperCase() )
+
+        } else if ((/^[A-Z]$/).test(item.getAttribute("data-name")) ) {
+            console.log(1)
+            item.innerHTML = (item.getAttribute("data-name")).toLowerCase();
+            item.setAttribute("data-name",item.getAttribute("data-name").toLowerCase() )
+        }
     });
-  }
-  
+}
 
 
 
-export {addClassCapsLock, addCapsLock, changeCapsLock}
+
+export { addClassCapsLock, addCapsLock, changeCapsLock}

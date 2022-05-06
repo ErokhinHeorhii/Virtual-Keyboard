@@ -1,6 +1,6 @@
 import "../assets/styles/style.scss";
 import "../assets/styles/css.css";
-import { addClassCapsLock, addCapsLock, changeCapsLock } from "./capsLock.js";
+import { addClassCapsLock, addCapsLock,changeCapsLock} from "./capsLock.js";
 
 const body = document.querySelector("body");
 const wrapper = document.querySelector(".wrapper");
@@ -71,27 +71,43 @@ allButtons.forEach((elem) => {
         allButtons.forEach((item) => {
             item.classList.remove("active");
         });
+        textarea.focus()
+
         const newButton = this.getAttribute("data-name");
         this.classList.add("active");
+
         if (this.getAttribute("data-name") === "Backspace") {
             textarea.value = textarea.value.substring(0, textarea.value.length - 1)
             console.log(2)
-            
         }
-        else  {
+        else if (this.getAttribute("data-name") === "Enter") {
+            textarea.value += "\n"
+        }
+        else if (this.getAttribute("data-name") === "ShiftRight" || this.getAttribute("data-name") === "ShiftLeft") {
+            textarea.value += ""
+        }
+        else if (this.getAttribute("data-name") === "Enter") {
+            textarea.value += "\n"
+        }
+        else if (this.getAttribute("data-name") === "Space") {
+            textarea.value += " "
+        }
+        else if (this.getAttribute("data-name") === "CapsLock") {
+
+        }
+        else {
             console.log(newButton)
-            textarea.value  += newButton
+            textarea.value += newButton
         }
         removeClass();
     };
 });
 
 
-
-
 const capsLock = document.querySelector(".key[data-name=\"CapsLock\"]");
 
-capsLock.addEventListener("keydown", console.log(1));
+capsLock.addEventListener("keydown", addCapsLock);
 capsLock.addEventListener("click", addCapsLock);
-// capsLock.addEventListener('keydown', changeCapsLock)
-// capsLock.addEventListener("click",changeCapsLock)
+capsLock.addEventListener('keydown', changeCapsLock)
+capsLock.addEventListener("click", changeCapsLock)
+
