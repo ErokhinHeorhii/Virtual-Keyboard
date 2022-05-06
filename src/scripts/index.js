@@ -8,8 +8,8 @@ const wrapper = document.querySelector(".wrapper");
 const arrWithKeyCode = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace", "Tab",
     "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\",
     "CapsLock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter",
-    "ShiftLeft", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "ArrowUp", "ShiftRight",
-    "Control", "Alt", "Space", "<", "ArrowDown", ">"];
+    "ShiftLeft", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "▲", "ShiftRight",
+    "Control", "Alt", "Space", "◄", "▼", "►"];
 
 document.onkeyup = function (e) {
     console.log(e);
@@ -54,6 +54,18 @@ document.onkeydown = function (e) {
         if (e.key === "CapsLock") {
             button.classList.toggle("key__active");
             changeCapsLock();
+        }
+        else if (e.key === "ArrowLeft"){
+            document.querySelector("body > div > div:nth-child(61)").classList.add("active");
+        }
+        else if (e.key === "ArrowRight"){
+            document.querySelector("body > div > div:nth-child(63)").classList.add("active");
+        }
+        else if (e.key === "ArrowUp"){
+            document.querySelector("body > div > div:nth-child(55)").classList.add("active");
+        }
+        else if (e.key === "ArrowDown"){
+            document.querySelector("body > div > div:nth-child(62)").classList.add("active");
         }
         else if (item === e.key) {
             button.classList.add("active");

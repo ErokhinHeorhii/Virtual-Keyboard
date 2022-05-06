@@ -21,13 +21,11 @@ const addCapsLock = function(e) {
 const changeCapsLock = function () {
     const allButtons = document.querySelectorAll(".key");
     allButtons.forEach((item) => {
-console.log(item)
         if ((/^[a-z]/).test(item.getAttribute("data-name")) ) {
             item.innerHTML = (item.getAttribute("data-name")).toUpperCase();
             item.setAttribute("data-name",item.getAttribute("data-name").toUpperCase() )
 
         } else if ((/^[A-Z]$/).test(item.getAttribute("data-name")) ) {
-            console.log(1)
             item.innerHTML = (item.getAttribute("data-name")).toLowerCase();
             item.setAttribute("data-name",item.getAttribute("data-name").toLowerCase() )
         }
