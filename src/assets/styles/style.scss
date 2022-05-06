@@ -22,7 +22,6 @@ body {
     background: rgb(184, 241, 241);
     border    : 2px solid rgb(13, 73, 130);
     font-size : 1rem;
-
 }
 
 .wrapper {
@@ -35,7 +34,6 @@ body {
     flex-wrap      : wrap;
     justify-content: center;
 
-
     .key {
         position        : relative;
         width           : auto;
@@ -47,26 +45,27 @@ body {
         border-radius   : 4px;
         color           : rgb(2, 0, 100);
         background-color: cornsilk;
-
-        // :hover{
-        // }
     }
-
-
-
 }
 
-body>div>div:nth-child(41),
-body>div>div:nth-child(29),
+body>div>div:nth-child(42),
+body>div>div:nth-child(30),
 body>div>div:nth-child(13),
-body>div>div:nth-child(43),
-body>div>div:nth-child(54) {
+body>div>div:nth-child(44),
+body>div>div:nth-child(56) {
     flex-grow: 1;
     max-width: 12%;
     min-width: 10%;
 }
 
-body>div>div:nth-child(56) {
+body>div>div:nth-child(58),
+body>div>div:nth-child(59),
+body>div>div:nth-child(15){
+    flex-grow: 1;
+    max-width: 10%;
+}
+
+body>div>div:nth-child(60) {
     flex-grow: 1;
     max-width: 60%;
 }
@@ -93,6 +92,5 @@ body>div>div:nth-child(56) {
 }
 
 .key__active::after {
-  
     background-color:aqua;
 }

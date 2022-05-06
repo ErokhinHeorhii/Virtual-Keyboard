@@ -12,14 +12,13 @@ function addClassCapsLock() {
 }
 
 
-function addCapsLock(e) {
-    if ((e.target.getAttribute("data-name")) === "CapsLock") {
+const addCapsLock = function(e) {
+    if ((e.target.getAttribute("data-name")) === "CapsLock" ) {
         e.target.classList.toggle("key__active");
     }
 }
 
 const changeCapsLock = function () {
-
     const allButtons = document.querySelectorAll(".key");
     allButtons.forEach((item) => {
 console.log(item)
