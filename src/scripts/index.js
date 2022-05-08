@@ -32,10 +32,9 @@ textarea.setAttribute("autofocus", "");
 body.prepend(textarea);
 
 
-var isWhichLang = false;
+let isWhichLang = false;
 
 function addKeyBoard() {
-    console.log(isWhichLang)
     if (!isWhichLang) {
         let button = "";
         for (let i = 0; i < arrWithKeyCode.length; ++i) {
@@ -66,55 +65,68 @@ addKeyBoard();
 addClassCapsLock();
 
 const allButtons = document.querySelectorAll(".key");
+// let arg;
+const downKeyboard = function (arg) {
 
-const downKeyboard = function (e) {
-    const button = document.querySelector(`.key[data-name="${e.key}"]`);
-    const otherButton = document.querySelector(`.key[data-name="${e.code}"]`);
+   
 
+    // console.log("i", isWhichLang)
+    const allButtons = document.querySelectorAll(".key");
     allButtons.forEach((item) => item.classList.remove("active"));
-    arrWithKeyCode.forEach((item) => {
-        if (item === e.key) {
-            button.classList.add("active");
-        }
-        if (e.key === "CapsLock") {
-            button.classList.toggle("key__active");
-            changeCapsLock();
-        }
-        else if (item.toUpperCase() === e.key) {
-            button.classList.add("active");
-        } else if (e.key === "ArrowLeft") {
-            document.querySelector("body > div > div:nth-child(61)").classList.add("active");
-        } else if (e.key === "ArrowRight") {
-            document.querySelector("body > div > div:nth-child(63)").classList.add("active");
-        } else if (e.key === "ArrowUp") {
-            document.querySelector("body > div > div:nth-child(55)").classList.add("active");
-        } else if (e.key === "ArrowDown") {
-            document.querySelector("body > div > div:nth-child(62)").classList.add("active");
-        } else if (e.key === "Tab") {
-            e.preventDefault();
-            textarea.value += " ";
-        }
-        else if (e.key === "Alt") {
-            e.preventDefault();
-        }
+   
+    return function (e) {
+        const button = document.querySelector(`.key[data-name="${e.key}"]`);
+        const otherButton = document.querySelector(`.key[data-name="${e.code}"]`);
+        isWhichLang === true?arg=arrWithKeyCode.slice():arg=arrWithKeyCodeRu.slice()
 
-        else if (item === e.code) {
-            otherButton.classList.add("active");
-        }
-    });
+        console.log(arg)
+        
+        arg.forEach((item) => {
+            if (item === e.key) {
+                console.log("item", item),
+                    console.log("e.key", e.key),
+                    button.classList.add("active");
+            }
+            if (e.key === "CapsLock") {
+                button.classList.toggle("key__active");
+                changeCapsLock();
+            }
+            else if (item.toUpperCase() === e.key) {
+                button.classList.add("active");
+            } else if (e.key === "ArrowLeft") {
+                document.querySelector("body > div > div:nth-child(61)").classList.add("active");
+            } else if (e.key === "ArrowRight") {
+                document.querySelector("body > div > div:nth-child(63)").classList.add("active");
+            } else if (e.key === "ArrowUp") {
+                document.querySelector("body > div > div:nth-child(55)").classList.add("active");
+            } else if (e.key === "ArrowDown") {
+                document.querySelector("body > div > div:nth-child(62)").classList.add("active");
+            } else if (e.key === "Tab") {
+                e.preventDefault();
+                textarea.value += " ";
+            }
+            else if (e.key === "Alt") {
+                e.preventDefault();
+            }
+
+            else if (item === e.code) {
+                otherButton.classList.add("active");
+            }
+        });
+    }
 };
 
-document.addEventListener("keydown", downKeyboard);
+const downKeyboardWithClosure = downKeyboard()
+document.addEventListener("keydown", downKeyboardWithClosure);
 
 const removeClass = function () {
-    
-const allButtons = document.querySelectorAll(".key");
+    const allButtons = document.querySelectorAll(".key");
     setTimeout(() => allButtons.forEach((item) => item.classList.remove("active")), 250);
 };
-
 document.addEventListener("keyup", removeClass);
 
 allButtons.forEach((elem) => {
+    const allButtons = document.querySelectorAll(".key");
     elem.onclick = function () {
         allButtons.forEach((item) => {
             item.classList.remove("active");
@@ -162,8 +174,6 @@ function runOnKeys(func, ...args) {
 
     document.addEventListener("keyup", (event) => {
         if (arrChars.length == 0) return; // нечего обрабатывать, завершаем функцию
-        console.log("args", args);
-        console.log("arrChars", arrChars);
         let runFunc = true;
         for (let arg of args) {
             if (!arrChars.includes(arg)) {
@@ -171,7 +181,6 @@ function runOnKeys(func, ...args) {
                 break;
             }
         }
-        console.log("R", runFunc)
         if (runFunc) {
             func()
             addClassCapsLock();
