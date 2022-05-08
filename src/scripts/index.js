@@ -1,6 +1,6 @@
 import "../assets/styles/style.scss";
 import "../assets/styles/css.css";
-import { addClassCapsLock, addCapsLock, changeCapsLock } from "./capsLock.js";
+import { addClassCapsLock, addCapsLock, changeCapsLock } from "./capsLock";
 
 const body = document.querySelector("body");
 const wrapper = document.querySelector(".wrapper");
@@ -9,6 +9,12 @@ const arrWithKeyCode = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "
     "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\",
     "CapsLock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter",
     "ShiftLeft", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "▲", "ShiftRight",
+    "Control", "Alt", "Space", "◄", "▼", "►"];
+
+const arrWithKeyCodeRu = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace", "Tab",
+    "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "\\",
+    "CapsLock", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "Enter",
+    "ShiftLeft", "я", "ч", "с", "м", "и", "и", "m", "ь", "б", "ю", "▲", "ShiftRight",
     "Control", "Alt", "Space", "◄", "▼", "►"];
 
 document.onkeyup = function (e) {
@@ -25,18 +31,35 @@ textarea.setAttribute("placeholder", "Your text");
 textarea.setAttribute("autofocus", "");
 body.prepend(textarea);
 
-// add keybords
+
+var isWhichLang = false;
 
 function addKeyBoard() {
-    let button = "";
-    for (let i = 0; i < arrWithKeyCode.length; ++i) {
-        if (i === 13 || i === 27 || i === 40 || i === 53) {
-            button += "<div class='clear-button'> </div>";
+    console.log(isWhichLang)
+    if (!isWhichLang) {
+        let button = "";
+        for (let i = 0; i < arrWithKeyCode.length; ++i) {
+            if (i === 13 || i === 27 || i === 40 || i === 53) {
+                button += "<div class='clear-button'> </div>";
+            }
+            button += `<div class="key" data-name="${arrWithKeyCode[i]}" >${arrWithKeyCode[i]}</div>`;
         }
-        button += `<div class="key" data-name="${arrWithKeyCode[i]}" >${arrWithKeyCode[i]}</div>`;
+        const wrapper = document.querySelector(".wrapper");
+        wrapper.innerHTML = button;
+        isWhichLang = true;
     }
-    const wrapper = document.querySelector(".wrapper");
-    wrapper.innerHTML = button;
+    else {
+        isWhichLang = false;
+        let button = "";
+        for (let i = 0; i < arrWithKeyCodeRu.length; ++i) {
+            if (i === 13 || i === 27 || i === 40 || i === 53) {
+                button += "<div class='clear-button'> </div>";
+            }
+            button += `<div class="key" data-name="${arrWithKeyCodeRu[i]}" >${arrWithKeyCodeRu[i]}</div>`;
+        }
+        const wrapper = document.querySelector(".wrapper");
+        wrapper.innerHTML = button;
+    }
 }
 
 addKeyBoard();
@@ -44,48 +67,48 @@ addClassCapsLock();
 
 const allButtons = document.querySelectorAll(".key");
 
-document.onkeydown = function (e) {
+const downKeyboard = function (e) {
     const button = document.querySelector(`.key[data-name="${e.key}"]`);
     const otherButton = document.querySelector(`.key[data-name="${e.code}"]`);
 
     allButtons.forEach((item) => item.classList.remove("active"));
-
     arrWithKeyCode.forEach((item) => {
         if (item === e.key) {
-            button.classList.add("active")
-        };
+            button.classList.add("active");
+        }
         if (e.key === "CapsLock") {
             button.classList.toggle("key__active");
             changeCapsLock();
         }
-        else if (e.key === "ArrowLeft"){
+        else if (item.toUpperCase() === e.key) {
+            button.classList.add("active");
+        } else if (e.key === "ArrowLeft") {
             document.querySelector("body > div > div:nth-child(61)").classList.add("active");
-        }
-        else if (e.key === "ArrowRight"){
+        } else if (e.key === "ArrowRight") {
             document.querySelector("body > div > div:nth-child(63)").classList.add("active");
-        }
-        else if (e.key === "ArrowUp"){
+        } else if (e.key === "ArrowUp") {
             document.querySelector("body > div > div:nth-child(55)").classList.add("active");
-        }
-        else if (e.key === "ArrowDown"){
+        } else if (e.key === "ArrowDown") {
             document.querySelector("body > div > div:nth-child(62)").classList.add("active");
+        } else if (e.key === "Tab") {
+            e.preventDefault();
+            textarea.value += " ";
+        }
+        else if (e.key === "Alt") {
+            e.preventDefault();
         }
 
         else if (item === e.code) {
             otherButton.classList.add("active");
         }
-
     });
 };
 
-// document.onkeydown = function (e){
-//     const button = document.querySelector(`.key[data-name="${e.key}"]`);
-//      if (e.key === "CapsLock"){
-//         button.classList.toggle("key__active");
-//     }
-// }
+document.addEventListener("keydown", downKeyboard);
 
 const removeClass = function () {
+    
+const allButtons = document.querySelectorAll(".key");
     setTimeout(() => allButtons.forEach((item) => item.classList.remove("active")), 250);
 };
 
@@ -97,26 +120,26 @@ allButtons.forEach((elem) => {
             item.classList.remove("active");
         });
         textarea.focus();
-
         const newButton = this.getAttribute("data-name");
         this.classList.add("active");
-
         if (this.getAttribute("data-name") === "Backspace") {
             textarea.value = textarea.value.substring(0, textarea.value.length - 1);
-            console.log(2);
-        } else if (this.getAttribute("data-name") === "Enter") {
+        } else if (newButton === "Enter") {
             textarea.value += "\n";
-        } else if (this.getAttribute("data-name") === "ShiftRight" || this.getAttribute("data-name") === "ShiftLeft") {
+        } else if (newButton === "ShiftRight" || newButton === "ShiftLeft" || newButton === "Alt" || newButton === "Control") {
             textarea.value += "";
-        } else if (this.getAttribute("data-name") === "Enter") {
+        } else if (newButton === "Enter") {
             textarea.value += "\n";
-        } else if (this.getAttribute("data-name") === "Space") {
+        } else if (newButton === "Space") {
             textarea.value += " ";
-        } else if (this.getAttribute("data-name") === "CapsLock") {
-            changeCapsLock();
         } else if (newButton === "CapsLock") {
             changeCapsLock();
-        } else {
+        } else if (newButton === "Tab") {
+            textarea.value += " ";
+        }
+        else if (newButton === "Alt") {
+        }
+        else {
             console.log(newButton);
             textarea.value += newButton;
         }
@@ -128,3 +151,34 @@ const capsLock = document.querySelector("body > div > div.key.key__activalable")
 
 capsLock.addEventListener("keydown", addCapsLock);
 capsLock.addEventListener("click", addCapsLock);
+
+function runOnKeys(func, ...args) {
+    let arrChars = []; // массив одновременно нажатых клавиш
+
+    document.addEventListener("keydown", (event) => {
+        if (event.repeat) return; // повторы не обрабатываем
+        arrChars.push(event.code); // запоминаем код нажатой и пока еще не отпущенной клавиши
+    });
+
+    document.addEventListener("keyup", (event) => {
+        if (arrChars.length == 0) return; // нечего обрабатывать, завершаем функцию
+        console.log("args", args);
+        console.log("arrChars", arrChars);
+        let runFunc = true;
+        for (let arg of args) {
+            if (!arrChars.includes(arg)) {
+                runFunc = false;
+                break;
+            }
+        }
+        console.log("R", runFunc)
+        if (runFunc) {
+            func()
+            addClassCapsLock();
+        }; // если нажаты, запускаем заданный код
+        arrChars.length = 0; // очистим массив одновременно нажатых клавиш
+    });
+}
+
+
+runOnKeys(addKeyBoard, "ShiftLeft", "AltLeft");

@@ -46,6 +46,7 @@ body {
         border-radius   : 4px;
         color           : rgb(2, 0, 100);
         background-color: cornsilk;
+        transition: 0.06s;
     }
 }
 
@@ -78,7 +79,9 @@ body>div>div:nth-child(60) {
 }
 
 .key.active {
+    transform: translate(0, 3px);
     background-color: rgb(203, 167, 114);
+    
 }
 
 .key__activalable::after {
