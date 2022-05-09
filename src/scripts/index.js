@@ -14,7 +14,7 @@ const arrWithKeyCode = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "
 const arrWithKeyCodeRu = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace", "Tab",
     "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "\\",
     "CapsLock", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "Enter",
-    "ShiftLeft", "я", "ч", "с", "м", "и", "и", "m", "ь", "б", "ю", "▲", "ShiftRight",
+    "ShiftLeft", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", "▲", "ShiftRight",
     "Control", "Alt", "Space", "◄", "▼", "►"];
 
 document.onkeyup = function (e) {
@@ -31,56 +31,76 @@ textarea.setAttribute("placeholder", "Your text");
 textarea.setAttribute("autofocus", "");
 body.prepend(textarea);
 
+const h1 =document.createElement("h1")
+h1.classList.add("class-h1")
+h1.textContent="Virtual Keyboard (simple)"
+body.prepend(h1);
+
+
+const p = document.createElement("p")
+p.classList.add("class-p")
+p.textContent="Keyboard for Windows, change languages: ShiftLeft+Alt"
+body.append(p);
 
 let isWhichLang = false;
+// localStorage.setItem('isWhichLang', isWhichLang)
+// let isWhichLang = localStorage.getItem('isWhichLang') ? localStorage.getItem('isWhichLang') : false;
 
-function addKeyBoard() {
-    if (!isWhichLang) {
-        let button = "";
-        for (let i = 0; i < arrWithKeyCode.length; ++i) {
-            if (i === 13 || i === 27 || i === 40 || i === 53) {
-                button += "<div class='clear-button'> </div>";
-            }
-            button += `<div class="key" data-name="${arrWithKeyCode[i]}" >${arrWithKeyCode[i]}</div>`;
+function getLocalStorage() {
+    if (localStorage.getItem(isWhichLang) ) {
+         isWhichLang = localStorage.getItem(isWhichLang)
+        // newAddKeyBoard()
+    } 
+}
+window.addEventListener('load', getLocalStorage)
+
+const addKeyBoard = function (arg) {
+    let button = "";
+    for (let i = 0; i < arg.length; ++i) {
+        if (i === 13 || i === 27 || i === 40 || i === 53) {
+            button += "<div class='clear-button'> </div>";
         }
-        const wrapper = document.querySelector(".wrapper");
-        wrapper.innerHTML = button;
-        isWhichLang = true;
+        button += `<div class="key" data-name="${arg[i]}" >${arg[i]}</div>`;
     }
-    else {
-        isWhichLang = false;
-        let button = "";
-        for (let i = 0; i < arrWithKeyCodeRu.length; ++i) {
-            if (i === 13 || i === 27 || i === 40 || i === 53) {
-                button += "<div class='clear-button'> </div>";
-            }
-            button += `<div class="key" data-name="${arrWithKeyCodeRu[i]}" >${arrWithKeyCodeRu[i]}</div>`;
-        }
-        const wrapper = document.querySelector(".wrapper");
-        wrapper.innerHTML = button;
-    }
+    const wrapper = document.querySelector(".wrapper");
+    wrapper.innerHTML = button;
 }
 
-addKeyBoard();
+const newAddKeyBoard = function () {
+    if (!isWhichLang) {
+        let arg = arrWithKeyCode.slice();
+        addKeyBoard(arg)
+        isWhichLang = true;
+        localStorage.setItem('isWhichLang', isWhichLang)
+    }
+    else {
+        let arg = arrWithKeyCodeRu.slice();
+        addKeyBoard(arg)
+        isWhichLang = false;
+         localStorage.setItem('isWhichLang', isWhichLang)
+    }
+}
+newAddKeyBoard();
 addClassCapsLock();
 
-const allButtons = document.querySelectorAll(".key");
+
+
+
+let allButtons = document.querySelectorAll(".key");
 // let arg;
 const downKeyboard = function (arg) {
-
-   
 
     // console.log("i", isWhichLang)
     const allButtons = document.querySelectorAll(".key");
     allButtons.forEach((item) => item.classList.remove("active"));
-   
+
     return function (e) {
         const button = document.querySelector(`.key[data-name="${e.key}"]`);
         const otherButton = document.querySelector(`.key[data-name="${e.code}"]`);
-        isWhichLang === true?arg=arrWithKeyCode.slice():arg=arrWithKeyCodeRu.slice()
+        isWhichLang === true ? arg = arrWithKeyCode.slice() : arg = arrWithKeyCodeRu.slice()
 
         console.log(arg)
-        
+
         arg.forEach((item) => {
             if (item === e.key) {
                 console.log("item", item),
@@ -124,7 +144,7 @@ const removeClass = function () {
     setTimeout(() => allButtons.forEach((item) => item.classList.remove("active")), 250);
 };
 document.addEventListener("keyup", removeClass);
-
+ allButtons = document.querySelectorAll(".key");
 allButtons.forEach((elem) => {
     const allButtons = document.querySelectorAll(".key");
     elem.onclick = function () {
@@ -132,9 +152,11 @@ allButtons.forEach((elem) => {
             item.classList.remove("active");
         });
         textarea.focus();
-        const newButton = this.getAttribute("data-name");
-        this.classList.add("active");
-        if (this.getAttribute("data-name") === "Backspace") {
+
+        const newButton = elem.getAttribute("data-name");
+        elem.classList.add("active");
+
+        if (newButton === "Backspace") {
             textarea.value = textarea.value.substring(0, textarea.value.length - 1);
         } else if (newButton === "Enter") {
             textarea.value += "\n";
@@ -190,4 +212,11 @@ function runOnKeys(func, ...args) {
 }
 
 
-runOnKeys(addKeyBoard, "ShiftLeft", "AltLeft");
+runOnKeys(newAddKeyBoard, "ShiftLeft", "AltLeft");
+
+// LocalStorage
+
+// function setLocalStorage() {
+//     localStorage.setItem('isWhichLang', isWhichLang)
+//   }
+//   window.addEventListener('beforeunload', setLocalStorage)
