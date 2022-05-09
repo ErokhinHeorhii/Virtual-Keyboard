@@ -11,7 +11,7 @@ module.exports = {
   },
   mode: 'development',
   plugins: [new HtmlWebpackPlugin({
-    title: "RSS Webpack",
+    title: "RSS Virtual-Keyboard",
     filename: 'index.html',
     template: 'src/index.html',
     minify: false,
